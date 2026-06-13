@@ -307,10 +307,32 @@ def suggest_target_columns(df):
 def get_descriptive_statistics(df):
     """
     Descriptive statistics.
+
+    `df.describe(include="all")` produces a "top"/"freq" style
+    summary where the "top" row mixes types across columns
+    (e.g. a numpy.bool_ for boolean columns and a str for object
+    columns). When transposed, this lands multiple incompatible
+    types inside a single object-dtype column, which pyarrow
+    (used by st.dataframe) cannot convert, raising:
+
+        ArrowTypeError: Expected bytes, got a 'numpy.bool' object
+
+    To keep the table renderable, any object-dtype column in the
+    resulting summary is cast to plain strings.
     """
 
     try:
-        return df.describe(include="all").T
+        stats = df.describe(include="all").T
+
+        for col in stats.columns:
+
+            if stats[col].dtype == object:
+
+                stats[col] = stats[col].apply(
+                    lambda v: "" if pd.isna(v) else str(v)
+                )
+
+        return stats
 
     except Exception:
         return pd.DataFrame()
