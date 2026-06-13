@@ -12,8 +12,6 @@ Features:
 - Outlier removal
 - Problem type detection
 - Data quality reporting
-
-
 """
 
 import numpy as np
@@ -315,6 +313,102 @@ def detect_class_imbalance(
         imbalance_detected,
         distribution_df
     )
+
+
+
+# DATA LEAKAGE DETECTION
+
+
+def detect_leakage_columns(
+    df,
+    target_column,
+    feature_columns,
+    purity_threshold=0.98,
+    max_unique_ratio=0.9
+):
+    """
+    Flag feature columns that (almost) perfectly determine the
+    target column.
+
+    This catches classic "target leakage" situations - for
+    example, the Titanic dataset's "alive" column is just an
+    inverted re-encoding of "survived". If such a column is left
+    in the feature set, models can reach ~100% accuracy, which
+    looks like a bug ("unreal" accuracy / overfitting) but is
+    really information leakage rather than a modeling issue.
+
+    For each candidate feature column, rows are grouped by the
+    feature's value and the proportion of rows in each group that
+    share the group's majority target value is computed
+    ("purity"). The overall (size-weighted) purity is compared
+    against `purity_threshold`.
+
+    Columns that are (almost) unique per row (e.g. IDs, names) are
+    skipped via `max_unique_ratio`, since a column being unique per
+    row trivially gives "perfect" purity without being a leakage
+    indicator in the same sense.
+
+    Returns:
+        dict mapping column name -> weighted purity score (0-1)
+        for every column considered suspicious.
+    """
+
+    suspicious = {}
+
+    if target_column not in df.columns:
+        return suspicious
+
+    y = df[target_column]
+
+    n_rows = len(df)
+
+    if n_rows == 0:
+        return suspicious
+
+    for col in feature_columns:
+
+        if col not in df.columns or col == target_column:
+            continue
+
+        x = df[col]
+
+        n_unique = x.nunique(dropna=True)
+
+        if n_unique <= 1:
+            continue
+
+        if n_unique >= max_unique_ratio * n_rows:
+            continue
+
+        try:
+
+            paired = pd.DataFrame({
+                "feature": x,
+                "target": y
+            }).dropna()
+
+            if len(paired) == 0:
+                continue
+
+            grouped = paired.groupby("feature")["target"]
+
+            group_purity = grouped.apply(
+                lambda s: s.value_counts(normalize=True).iloc[0]
+            )
+
+            group_weight = grouped.size() / len(paired)
+
+            weighted_purity = float(
+                (group_purity * group_weight).sum()
+            )
+
+        except Exception:
+            continue
+
+        if weighted_purity >= purity_threshold:
+            suspicious[col] = weighted_purity
+
+    return suspicious
 
 
 
