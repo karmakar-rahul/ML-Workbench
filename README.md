@@ -1,118 +1,132 @@
 # ML Workbench
 
-An interactive Machine Learning Visualization Dashboard built using Streamlit.
+An interactive Machine Learning Dashboard built with Streamlit that enables users to perform Classification, Regression, and Clustering workflows through a no-code graphical interface. The application supports dataset exploration, preprocessing, model training, performance evaluation, visualization, and Excel report generation.
 
-The application allows users to load datasets, train machine learning models, visualize results, compare model performance, and export detailed evaluation reports to Excel.
-
----
-
-## Features
-
-### Dataset Management
-
-* Built-in datasets
-
-  * Iris
-  * Titanic
-  * Wine
-  * Breast Cancer
-  * Diabetes
-  * California Housing
-  * Penguins
-  * MPG
-  * Tips
-  * Mall Customers
-
-* Custom CSV upload support
-
-* Dataset summary
-
-* Missing value analysis
-
-* Data type inspection
+Streamlit App : [Try the interactive dashboard](https://ml-workbench.streamlit.app/)
 
 ---
 
-## Machine Learning Tasks
+## Project Overview
 
-### Classification
+| Feature              | Description                                             |
+| -------------------- | ------------------------------------------------------- |
+| Dataset Exploration  | Load built-in datasets or upload custom datasets        |
+| Data Preprocessing   | Missing value handling, encoding, scaling, and cleaning |
+| Classification       | Train and evaluate multiple classification algorithms   |
+| Regression           | Train and evaluate regression models                    |
+| Clustering           | Perform unsupervised clustering analysis                |
+| Visualization Studio | Interactive plots and performance visualizations        |
+| Excel Export         | Export model results and evaluation reports             |
+| Interactive UI       | Built using Streamlit for an intuitive workflow         |
 
-Supported Models:
+### Project Architecture
 
-* Logistic Regression
-* Decision Tree
-* Random Forest
-* KNN
-* Naive Bayes
-* SVM
-* LDA
-* QDA
-* AdaBoost
-* Gradient Boosting
-* XGBoost
-* Bagging
-* Extra Trees
+| Module           | Responsibility                                      |
+| ---------------- | --------------------------------------------------- |
+| app.py           | Streamlit user interface and workflow orchestration |
+| datasets.py      | Dataset loading and management                      |
+| preprocessing.py | Data cleaning, encoding, scaling, and preprocessing |
+| models.py        | Machine learning model registry and training        |
+| metrics.py       | Evaluation metric computation                       |
+| visualization.py | Plot generation and visual analytics                |
+| export_excel.py  | Excel report creation and export                    |
 
-Evaluation Metrics:
+### Project Structure
 
-* Accuracy
-* Precision
-* Recall
-* F1 Score
-* Specificity
-* Sensitivity
-* TPR
-* FPR
-* ROC-AUC
-* Confusion Matrix
+```text
+ML-Workbench/
+│
+├── app.py
+├── datasets.py
+├── models.py
+├── metrics.py
+├── visualization.py
+├── preprocessing.py
+├── export_excel.py
+│
+├── README.md
+├── requirements.txt
+```
+### Technology Stack
+
+| Category                 | Technologies                |
+| ------------------------ | --------------------------- |
+| Language                 | Python                      |
+| Frontend                 | Streamlit                   |
+| Machine Learning         | Scikit-Learn, XGBoost       |
+| Data Processing          | Pandas, NumPy               |
+| Visualization            | Plotly, Matplotlib, Seaborn |
+| Export Engine            | OpenPyXL                    |
+| Dimensionality Reduction | PCA, UMAP                   |
+| Explainability Ready     | SHAP                        |
+---
+
+## Supported Machine Learning Tasks
+
+| Task Type                | Available |
+| ------------------------ | --------- |
+| Classification           | Logistic Regression, Decision Tree, Random Forest, KNN, Naive Bayes, SVM, LDA, QDA, AdaBoost, Gradient Boosting, XGBoost, Bagging, Extra Trees        |
+| Regression               |  Linear Regression, Ridge, Lasso, ElasticNet, Decision Tree Regressor, Random Forest Regressor, KNN Regressor, SVR, AdaBoost Regressor, Gradient Boosting Regressor, XGBoost Regressor, Bagging Regressor        |
+| Clustering               |  KMeans, Agglomerative Clustering, DBSCAN, MeanShift, Birch, Gaussian Mixture Models        |
 
 ---
 
-### Regression
+## Built-in Datasets
 
-Supported Models:
+| Dataset            | Category       |
+| ------------------ | -------------- |
+| Iris               | Classification |
+| Wine               | Classification |
+| Breast Cancer      | Classification |
+| Titanic            | Classification |
+| Penguins           | Classification |
+| Diabetes           | Regression     |
+| California Housing | Regression     |
+| MPG                | Regression     |
+| Tips               | Regression     |
+| Mall Customers     | Clustering     |
 
-* Linear Regression
-* Ridge
-* Lasso
-* ElasticNet
-* Decision Tree Regressor
-* Random Forest Regressor
-* KNN Regressor
-* SVR
-* AdaBoost Regressor
-* Gradient Boosting Regressor
-* XGBoost Regressor
-* Bagging Regressor
-
-Evaluation Metrics:
-
-* MAE
-* MSE
-* RMSE
-* R²
-* Adjusted R²
-* MAPE
 
 ---
 
-### Clustering
+## Metrics
 
-Supported Models:
+| Classification Metrics    |
+| ------------------------- |
+| Accuracy                  |
+| Precision                 |
+| Recall                    |
+| F1 Score                  |
+| Specificity               |
+| Sensitivity               |
+| True Positive Rate (TPR)  |
+| False Positive Rate (FPR) |
+| ROC-AUC Score             |
+| Confusion Matrix          |
 
-* KMeans
-* Agglomerative Clustering
-* DBSCAN
-* MeanShift
-* Birch
-* Gaussian Mixture Models
+---
 
-Evaluation Metrics:
+## Regression Metrics
 
-* Silhouette Score
-* Davies-Bouldin Index
-* Calinski-Harabasz Score
-* Inertia
+| Metric                                |
+| ------------------------------------- |
+| Mean Absolute Error (MAE)             |
+| Mean Squared Error (MSE)              |
+| Root Mean Squared Error (RMSE)        |
+| R² Score                              |
+| Adjusted R²                           |
+| Mean Absolute Percentage Error (MAPE) |
+
+---
+
+## Clustering Metrics
+
+| Metric                  |
+| ----------------------- |
+| Silhouette Score        |
+| Davies-Bouldin Index    |
+| Calinski-Harabasz Index |
+| Inertia                 |
 
 ---
 
@@ -144,65 +158,26 @@ Evaluation Metrics:
 
 ---
 
-## Excel Report Generation
-
-Automatically exports:
-
-* Dataset Summary
-* Raw Data
-* Train Data
-* Test Data
-* Predictions
-* Metrics
-* Classification Report
-* Confusion Matrix
-* Feature Importance
-* Cross Validation Scores
-* Model Parameters
-
----
-
 ## Installation
 
-Clone repository:
+### Clone Repository
 
 ```bash
 git clone https://github.com/karmakar-rahul/ML-Workbench.git
 cd ML-Workbench
 ```
 
-Install dependencies:
+### Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Run:
+### Run Application
 
 ```bash
 streamlit run app.py
 ```
-
----
-
-## Project Structure
-
-```text
-ML-Workbench/
-│
-├── app.py
-├── datasets.py
-├── models.py
-├── metrics.py
-├── visualization.py
-├── preprocessing.py
-├── export_excel.py
-│
-├── README.md
-├── requirements.txt
-
-```
-
 ---
 
 ## Future Improvements
@@ -216,23 +191,13 @@ ML-Workbench/
 
 ---
 
-## Technologies Used
-
-* Python
-* Streamlit
-* Scikit-Learn
-* XGBoost
-* Pandas
-* NumPy
-* Plotly
-* Matplotlib
-* Seaborn
-* OpenPyXL
-
----
-
 ## Author
 
 Rahul Karmakar
-PGCP - BDA , C-DAC Chenai
-M.Sc. Physics (Astrophysics), Assam University
+* PGCP - BDA , C-DAC Chenai
+* M.Sc. Physics (Astrophysics), Assam University
+---
+
+## License
+
+This project is released under the MIT License.
