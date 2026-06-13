@@ -47,6 +47,35 @@ from sklearn.decomposition import PCA
 
 
 
+# SHARED SIZING
+
+# These figures are typically rendered two-per-row inside
+# st.columns(2). A fixed, moderate height keeps all charts
+# visually consistent and prevents Plotly/Matplotlib figures
+# from rendering at an oversized scale in wide/full-screen mode.
+
+PLOTLY_HEIGHT = 380
+
+MPL_FIGSIZE_SMALL = (4.5, 4)
+MPL_FIGSIZE_MEDIUM = (6, 4.2)
+MPL_FIGSIZE_WIDE = (7, 5)
+
+
+def _style_plotly(fig, title=None):
+    """
+    Apply a consistent, grid-friendly layout to a Plotly figure.
+    """
+
+    fig.update_layout(
+        height=PLOTLY_HEIGHT,
+        margin=dict(l=40, r=20, t=50, b=40),
+        title=title if title is not None else fig.layout.title.text
+    )
+
+    return fig
+
+
+
 # CONFUSION MATRIX
 
 
@@ -64,7 +93,7 @@ def plot_confusion_matrix(
     )
 
     fig, ax = plt.subplots(
-        figsize=(6, 5)
+        figsize=MPL_FIGSIZE_SMALL
     )
 
     sns.heatmap(
@@ -138,12 +167,11 @@ def plot_roc_curve(
         )
 
         fig.update_layout(
-            title="ROC Curve",
             xaxis_title="False Positive Rate",
             yaxis_title="True Positive Rate"
         )
 
-        return fig
+        return _style_plotly(fig, title="ROC Curve")
 
     except Exception:
         return None
@@ -184,12 +212,11 @@ def plot_precision_recall_curve(
         )
 
         fig.update_layout(
-            title="Precision Recall Curve",
             xaxis_title="Recall",
             yaxis_title="Precision"
         )
 
-        return fig
+        return _style_plotly(fig, title="Precision Recall Curve")
 
     except Exception:
         return None
@@ -231,11 +258,7 @@ def plot_feature_importance(
         title="Feature Importance"
     )
 
-    return fig
-
-
-
-# ACTUAL VS PREDICTED
+    return _style_plotly(fig, title="Feature Importance")
 
 
 def plot_actual_vs_predicted(
@@ -259,11 +282,7 @@ def plot_actual_vs_predicted(
         title="Actual vs Predicted"
     )
 
-    return fig
-
-
-
-# RESIDUAL PLOT
+    return _style_plotly(fig, title="Actual vs Predicted")
 
 
 def plot_residuals(
@@ -286,11 +305,7 @@ def plot_residuals(
         title="Residual Plot"
     )
 
-    return fig
-
-
-
-# ERROR DISTRIBUTION
+    return _style_plotly(fig, title="Residual Plot")
 
 
 def plot_error_distribution(
@@ -309,7 +324,7 @@ def plot_error_distribution(
         title="Prediction Error Distribution"
     )
 
-    return fig
+    return _style_plotly(fig, title="Prediction Error Distribution")
 
 
 
@@ -330,7 +345,7 @@ def plot_correlation_heatmap(
     corr = numeric_df.corr()
 
     fig, ax = plt.subplots(
-        figsize=(10, 8)
+        figsize=MPL_FIGSIZE_WIDE
     )
 
     sns.heatmap(
@@ -398,7 +413,7 @@ def plot_pca_projection(
             title="PCA Projection"
         )
 
-    return fig
+    return _style_plotly(fig, title="PCA Projection")
 
 
 
@@ -442,11 +457,7 @@ def plot_clusters(
         title="Cluster Visualization"
     )
 
-    return fig
-
-
-
-# ELBOW METHOD
+    return _style_plotly(fig, title="Cluster Visualization")
 
 
 def plot_elbow_curve(
@@ -500,12 +511,11 @@ def plot_elbow_curve(
     )
 
     fig.update_layout(
-        title="Elbow Method",
         xaxis_title="K",
         yaxis_title="Inertia"
     )
 
-    return fig
+    return _style_plotly(fig, title="Elbow Method")
 
 
 
@@ -535,7 +545,7 @@ def plot_silhouette(
     )
 
     fig, ax = plt.subplots(
-        figsize=(8, 5)
+        figsize=MPL_FIGSIZE_MEDIUM
     )
 
     y_lower = 10
@@ -597,7 +607,7 @@ def plot_numeric_distribution(
         title=f"{column} Distribution"
     )
 
-    return fig
+    return _style_plotly(fig, title=f"{column} Distribution")
 
 
 
@@ -630,4 +640,4 @@ def plot_categorical_distribution(
         title=f"{column} Distribution"
     )
 
-    return fig
+    return _style_plotly(fig, title=f"{column} Distribution")
